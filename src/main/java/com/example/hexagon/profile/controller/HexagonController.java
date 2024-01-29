@@ -26,11 +26,21 @@ public class HexagonController {
         return hexagonService.createProfile(profile);
     }
 
+    /**
+     * 프로필의 참가자 조회
+     * @param id
+     * @return
+     */
     @GetMapping("/profile/{id}/participant")
     public List<Participant> getParticipantByProfileId(@PathVariable(name = "id") String id) {
         return hexagonService.getParticipantByProfileId(id);
     }
 
+    /**
+     * 프로필의 참가자 평균 점수
+     * @param id
+     * @return
+     */
     @GetMapping("/profile/{id}/participant/avg")
     public ResAvgParticipantDto getAvgPoint(@PathVariable(name = "id") String id) {
         List<Double> participantAverage = hexagonService.getParticipantAverage(id);
@@ -39,5 +49,16 @@ public class HexagonController {
                 .profileId(id)
                 .averagePoint(participantAverage)
                 .build();
+    }
+
+    /**
+     * 참가자 생성
+     * @param id
+     * @param participant
+     * @return
+     */
+    @PostMapping("/profile/{id}/participant")
+    public Participant createParticipant(@PathVariable(name = "id") String id, @RequestBody Participant participant) {
+        return hexagonService.createParticipant(id, participant);
     }
 }

@@ -6,6 +6,7 @@ import com.example.hexagon.profile.entity.Profile;
 import com.example.hexagon.profile.repository.HexagonParticipantRepository;
 import com.example.hexagon.profile.repository.HexagonProfileRepository;
 import jakarta.transaction.Transactional;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,13 @@ public class HexagonService {
     @Transactional
     public Profile createProfile(Profile profile) {
         return hexagonProfileRepository.save(profile);
+    }
+
+    @Transactional
+    public Participant createParticipant(String id, @NonNull Participant participant) {
+        participant.setProfile(hexagonProfileRepository.findById(Long.parseLong(id))
+                .orElseThrow(() -> new ProfileNotFoundException("존재하지 않는 프로필입니다. id:" + id)));
+        return hexagonParticipantRepository.save(participant);
     }
 
     @Transactional
